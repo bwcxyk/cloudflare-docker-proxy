@@ -4,23 +4,26 @@ addEventListener("fetch", (event) => {
 });
 
 const routes = {
-  "docker.libcuda.so": "https://registry-1.docker.io",
-  "quay.libcuda.so": "https://quay.io",
-  "gcr.libcuda.so": "https://gcr.io",
-  "k8s-gcr.libcuda.so": "https://k8s.gcr.io",
-  "k8s.libcuda.so": "https://registry.k8s.io",
-  "ghcr.libcuda.so": "https://ghcr.io",
-  "cloudsmith.libcuda.so": "https://docker.cloudsmith.io",
+  "docker": "https://registry-1.docker.io",
+  "quay": "https://quay.io",
+  "gcr": "https://gcr.io",
+  "k8s-gcr": "https://k8s.gcr.io",
+  "k8s": "https://registry.k8s.io",
+  "ghcr": "https://ghcr.io",
+  "cloudsmith": "https://docker.cloudsmith.io",
 };
 
 function routeByHosts(host) {
-  if (host in routes) {
-    return routes[host];
+  for (const [key, value] of Object.entries(routes)) {
+    if (host.includes(key)) {
+      return value;
+    }
   }
   if (MODE == "debug") {
     return TARGET_UPSTREAM;
   }
-  return "";
+  // return "";
+  return "https://registry-1.docker.io"; // Fallback to docker.io
 }
 
 async function handleRequest(request) {
